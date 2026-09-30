@@ -687,7 +687,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
-    { name = "metatrader5" },
+    { name = "metatrader5", marker = "sys_platform == 'win32'" },
     { name = "psycopg", extra = ["binary"] },
     { name = "uvicorn", extra = ["standard"] },
 ]
@@ -705,7 +705,7 @@ test = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.115" },
     { name = "httpx", marker = "extra == 'test'", specifier = ">=0.27" },
-    { name = "metatrader5", specifier = ">=5.0.6231" },
+    { name = "metatrader5", marker = "sys_platform == 'win32'", specifier = ">=5.0.6231" },
     { name = "metatrader5", marker = "extra == 'mt5'", specifier = ">=5.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8" },
