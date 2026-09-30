@@ -16,7 +16,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["httpx>=0.27", "pytest>=8"]
-mt5 = ["MetaTrader5>=5.0; sys_platform == 'win32'""]
+mt5 = ["MetaTrader5>=5.0; sys_platform == 'win32'"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
