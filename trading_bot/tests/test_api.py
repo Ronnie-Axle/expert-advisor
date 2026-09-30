@@ -30,6 +30,21 @@ def test_health_and_trace_endpoints(tmp_path):
     assert listed.json()[0]["id"] == created.json()["id"]
 
 
+def test_flutter_web_origin_is_allowed_by_cors(tmp_path):
+    client = TestClient(create_app(tmp_path / "traces.sqlite3"))
+
+    response = client.options(
+        "/api/v1/bot/status",
+        headers={
+            "Origin": "http://localhost:8080",
+            "Access-Control-Request-Method": "GET",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "http://localhost:8080"
+
+
 def test_trace_endpoint_validates_input_and_filters(tmp_path):
     client = TestClient(create_app(tmp_path / "traces.sqlite3"))
 
@@ -64,6 +79,7 @@ def test_bot_management_endpoints(tmp_path):
     assert status_res.status_code == 200
     data = status_res.json()
     assert data["symbol"] == "NAS100"
+    assert data["active_mode"] == "paper"
     assert data["daily_drawdown_limit_pct"] == 20.0
     assert data["max_total_risk_pct"] == 10.0
     assert data["profit_target_pct_per_order"] == 20.0
@@ -77,4 +93,4 @@ def test_bot_management_endpoints(tmp_path):
     # Test emergency close all
     close_res = client.post("/api/v1/bot/emergency-close-all")
     assert close_res.status_code == 200
-    assert close_res.json()["status"] == "success"
+    assert close_res.json()["status"] == "success"

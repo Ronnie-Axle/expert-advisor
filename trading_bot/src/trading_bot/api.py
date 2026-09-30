@@ -7,10 +7,12 @@ from pathlib import Path
 from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, status
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
 from trading_bot.config import BotConfig
 from trading_bot.data.trace_store import TraceRecord, TraceStore
+from trading_bot.execution.broker import MT5Broker
 from trading_bot.engine import TradingBotEngine
 
 
@@ -62,6 +64,21 @@ def create_app(
     )
 
     app = FastAPI(title="NAS100 Scalper Trading Bot API", version="0.1.0")
+    allowed_origins = [
+        origin.strip()
+        for origin in os.getenv(
+            "TRADING_BOT_CORS_ORIGINS",
+            "http://localhost:3000,http://localhost:5000,http://localhost:5173,http://localhost:8080",
+        ).split(",")
+        if origin.strip()
+    ]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=allowed_origins,
+        allow_credentials=False,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Content-Type"],
+    )
     app.state.trace_store = TraceStore(db_target)
     app.state.engine = TradingBotEngine(
         config=bot_config,
@@ -85,6 +102,7 @@ def create_app(
         return {
             "symbol": engine.config.symbol,
             "mode": engine.config.mode,
+            "active_mode": "mt5" if isinstance(engine.broker, MT5Broker) else "paper",
             "balance": round(balance, 2),
             "equity": round(equity, 2),
             "day_start_balance": round(engine.risk_manager.day_start_balance, 2),

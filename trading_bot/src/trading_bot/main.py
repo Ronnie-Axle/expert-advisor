@@ -73,7 +73,12 @@ if __name__ == "__main__":
 
     if args.api:
         import uvicorn
-        uvicorn.run("trading_bot.main:app", host="127.0.0.1", port=8000, reload=False)
+        uvicorn.run(
+            "trading_bot.main:app",
+            host=os.getenv("TRADING_BOT_API_HOST", "127.0.0.1"),
+            port=int(os.getenv("TRADING_BOT_API_PORT", "8000")),
+            reload=False,
+        )
     else:
         # Default action is running the bot loop
         run_continuous_bot(cfg)

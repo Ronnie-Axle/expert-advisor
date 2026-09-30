@@ -4,16 +4,16 @@ A high-performance algorithmic trading system for scalping **NAS100 / US100 / US
 
 ## Core Rules & Risk Architecture
 
-| Parameter | Value | Description |
-| :--- | :--- | :--- |
-| **Instrument** | `NAS100` | Supports broker aliases: `US100`, `USTEC`, `NDX`, `NAS100USD`, `NAS100.cash` |
-| **Timeframe** | `M5` (5 Minutes) | Evaluates on completed 5-minute candle closures (no repainting) |
-| **Entry Pattern** | Engulfing | **Bullish Engulfing** $\rightarrow$ **BUY**<br>**Bearish Engulfing** $\rightarrow$ **SELL** |
-| **Initial Setup** | 2 Orders | Enters with 2 simultaneous orders on the initial setup |
-| **Max Concurrent Orders** | 10 Orders | Can scale up to 10 active entries as signals occur |
-| **Total Risk Ceiling** | 10% of Balance | Cumulative dollar risk across **all** active trades $\le$ 10% of balance |
-| **Profit Target (TP)** | 20% per Order | Take Profit is dynamically calculated to capture 20% account balance gain per order |
-| **Daily Drawdown Limit** | 20% Hard Stop | If daily equity drops $\ge$ 20% from start of day: closes all trades & halts trading |
+| Parameter                 | Value            | Description                                                                                 |
+| :------------------------ | :--------------- | :------------------------------------------------------------------------------------------ |
+| **Instrument**            | `NAS100`         | Supports broker aliases: `US100`, `USTEC`, `NDX`, `NAS100USD`, `NAS100.cash`                |
+| **Timeframe**             | `M5` (5 Minutes) | Evaluates on completed 5-minute candle closures (no repainting)                             |
+| **Entry Pattern**         | Engulfing        | **Bullish Engulfing** $\rightarrow$ **BUY**<br>**Bearish Engulfing** $\rightarrow$ **SELL** |
+| **Initial Setup**         | 2 Orders         | Enters with 2 simultaneous orders on the initial setup                                      |
+| **Max Concurrent Orders** | 10 Orders        | Can scale up to 10 active entries as signals occur                                          |
+| **Total Risk Ceiling**    | 10% of Balance   | Cumulative dollar risk across **all** active trades $\le$ 10% of balance                    |
+| **Profit Target (TP)**    | 20% per Order    | Take Profit is dynamically calculated to capture 20% account balance gain per order         |
+| **Daily Drawdown Limit**  | 20% Hard Stop    | If daily equity drops $\ge$ 20% from start of day: closes all trades & halts trading        |
 
 ---
 
@@ -32,6 +32,10 @@ A high-performance algorithmic trading system for scalping **NAS100 / US100 / US
 ---
 
 ## Usage
+
+### Flutter Dashboard
+
+The Flutter control dashboard is in `flutter_app/`. It connects to the FastAPI service for account state, open positions, persistent database-backed traces, manual scans, and emergency close. See [`flutter_app/README.md`](flutter_app/README.md) for setup and device-specific API addresses. The backend remains the sole owner of the configured SQLite or PostgreSQL database.
 
 ### Option A: Python Bot
 
