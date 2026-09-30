@@ -9,7 +9,7 @@ description = "A strategy-agnostic trading bot scaffold"
 requires-python = ">=3.11"
 dependencies = [
 	"fastapi>=0.115",
-	"metatrader5>=5.0.6231",
+	"metatrader5>=5.0.6231; sys_platform == 'win32'",
 	"psycopg[binary]>=3.2",
 	"uvicorn[standard]>=0.30",
 ]
